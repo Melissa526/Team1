@@ -56,7 +56,6 @@ public class CheckPW extends JDialog {
 	public CheckPW(BankDto dto) {
 		my = biz.selectOne(dto.getAccount());
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 350, 600);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.window);
