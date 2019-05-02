@@ -58,5 +58,13 @@ public class BankBiz {
 	public boolean accountCheck(String account) {
 		return dao.accountCheck(account);
 	}
+	
+	public int Deposit(String account, String message, int in_money) {
+		return dao.Deposit(account, message, in_money);
+	}
+	
+	public int Withdraw(String account, String message, int out_money) {
+		return dao.Withdraw(account, message, out_money);
+	}
 
 }
