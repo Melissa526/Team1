@@ -142,6 +142,98 @@ public class BankDao {
 			
 		return accountChk;
 	}
+	
+	public int Deposit(String account, String message, int in_money) {
+		Connection con = getConnection();
+		PreparedStatement pstm01 = null;
+		PreparedStatement pstm02 = null;
+		int res01 = 0;
+		int res02 = 0;
+		String sql01 = " UPDATE BANK SET T_BALANCE = ? WHERE ACCOUNT = ? ";
+		String sql02 = " INSERT INTO TRADE_LIST(ACCOUNT, TRADE_DATE, SENDER, MESSAGE, IN_MONEY, OUT_MONEY, BALANCE) VALUES(?,SYSDATE,?,?,?,?,?) ";
+		
+		try {
+			pstm01 = con.prepareStatement(sql01);
+			pstm01.setInt(1,getBalance(account)+in_money);
+			pstm01.setString(2,account);
+			System.out.println("03. query 준비");
+			
+			res01 = pstm01.executeUpdate();
+			System.out.println("04. query 실행 및 리턴");
+		} catch (SQLException e) {
+			System.out.println("03/04 에러1");
+			e.printStackTrace();
+		}finally {
+			close(pstm01);
+		}
+		
+		try {
+			pstm02 = con.prepareStatement(sql02);
+			pstm02.setString(1,account);
+			pstm02.setString(2,"ATM입금");
+			pstm02.setString(3,message);
+			pstm02.setInt(4,in_money);
+			pstm02.setInt(5,0);
+			pstm02.setInt(6,getBalance(account));
+			System.out.println("03. query 준비");
+			
+			res02 = pstm02.executeUpdate();
+			System.out.println("04. query 실행 및 리턴");
+		} catch (SQLException e) {
+			System.out.println("03/04 에러2");
+			e.printStackTrace();
+		}finally {
+			close(pstm02,con);
+		}
+		
+		return res01+res02;
+	}
+	
+	public int Withdraw(String account, String message, int out_money) {
+		Connection con = getConnection();
+		PreparedStatement pstm01 = null;
+		PreparedStatement pstm02 = null;
+		int res01 = 0;
+		int res02 = 0;
+		String sql01 = " UPDATE BANK SET T_BALANCE = ? WHERE ACCOUNT = ? ";
+		String sql02 = " INSERT INTO TRADE_LIST(ACCOUNT, TRADE_DATE, SENDER, MESSAGE, IN_MONEY, OUT_MONEY, BALANCE) VALUES(?,SYSDATE,?,?,?,?,?) ";
+		
+		try {
+			pstm01 = con.prepareStatement(sql01);
+			pstm01.setInt(1,getBalance(account)-out_money);
+			pstm01.setString(2,account);
+			System.out.println("03. query 준비");
+			
+			res01 = pstm01.executeUpdate();
+			System.out.println("04. query 실행 및 리턴");
+		} catch (SQLException e) {
+			System.out.println("03/04 에러1");
+			e.printStackTrace();
+		}finally {
+			close(pstm01);
+		}
+		
+		try {
+			pstm02 = con.prepareStatement(sql02);
+			pstm02.setString(1,account);
+			pstm02.setString(2,"ATM출금");
+			pstm02.setString(3,message);
+			pstm02.setInt(4,0);
+			pstm02.setInt(5,out_money);
+			pstm02.setInt(6,getBalance(account));
+			System.out.println("03. query 준비");
+			
+			res02 = pstm02.executeUpdate();
+			System.out.println("03. query 실행 및 리턴");
+		} catch (SQLException e) {
+			System.out.println("03/04 에러2");
+			e.printStackTrace();
+		}finally {
+			close(pstm02,con);
+		}
+		
+		return res01+res02;
+	}
 
 }
 
