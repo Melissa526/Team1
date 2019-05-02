@@ -1,7 +1,6 @@
 package com.gui;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
@@ -10,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,10 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import com.biz.BankBiz;
 import com.dto.BankDto;
 
-public class CheckPW extends JFrame {
+public class CheckPW extends JDialog {
 
 	private JPanel contentPane;
 	private JButton btn1;
@@ -42,32 +41,18 @@ public class CheckPW extends JFrame {
 	private JTextField txtPW2;
 	private JTextField txtPW3;
 
-	BankBiz biz = new BankBiz();
-	BankDto my = biz.selectOne("01085278040");
-	StringBuffer pwArr = new StringBuffer();
+	private BankDto my;
+	private StringBuffer pwArr = new StringBuffer();
+	private boolean pwChk = false;
 	int btnCnt = 0;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CheckPW frame = new CheckPW();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	/**
 	 * Create the frame.
 	 */
-	public CheckPW() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public CheckPW(JFrame onwer, String title, BankDto dto) {
+		super(onwer, title, true);
+		my = dto;
+		
 		setBounds(100, 100, 350, 600);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.window);
@@ -180,14 +165,12 @@ public class CheckPW extends JFrame {
 		btn8.addActionListener(my);
 		btn9.addActionListener(my);
 		btn0.addActionListener(my);
-
 	}
 
 	class myEvent implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
 			
 			if (e.getSource() == btn_delete) {
 				if (!txtPW4.getText().equals("")) {
@@ -224,24 +207,23 @@ public class CheckPW extends JFrame {
 					}
 					btnCnt++;
 				}
-				
 				if(pwArr.length()==4) {
 					System.out.println(pwArr.toString());
-					if(passwordCheck(my, pwArr)) {
-						dispose();
+					if(my.getPassword().equals(pwArr.toString())) {
+						pwChk = true;
+						System.out.println("(#)비밀번호 일치");
+						setVisible(false);
+						//dispose();
 					}else {
-						JOptionPane.showMessageDialog(null, "비밀번호가 틀립니다!!", "비밀번호 오류", JOptionPane.ERROR_MESSAGE);					}
+						JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다!!", "비밀번호 오류", JOptionPane.ERROR_MESSAGE);					}
 				}
 				
 			}
+			
 		}
-	}
-
-	public boolean passwordCheck(BankDto dto, StringBuffer arr) {
-		if(dto.getPassword().equals(arr.toString())) {
-			return true;
-		}else {
-			return false;
-		}
+	}	
+	
+	public boolean isPwChk() {
+		return pwChk;
 	}
 }
