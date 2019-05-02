@@ -138,8 +138,9 @@ public class BankDao {
 		}
 		return list;
 	}
-
-	public BankDto BankBalance(String account) {// 계좌번호로 bank테이블 balance값 가져오기
+	
+	// 계좌번호로 bank테이블 balance값 가져오기
+	public BankDto BankBalance(String account) {		
 		Connection con = getConnection();
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
