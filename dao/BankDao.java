@@ -1,9 +1,6 @@
 package com.dao;
 
-import static common.JDBCTemplate.close;
-import static common.JDBCTemplate.commit;
-import static common.JDBCTemplate.getConnection;
-import static common.JDBCTemplate.rollBack;
+import static common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
