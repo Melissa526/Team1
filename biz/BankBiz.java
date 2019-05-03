@@ -21,4 +21,10 @@ public class BankBiz {
 	public List<BankDto> tradeListOut(String account){
 		return dao.tradeListOut(account);
 	}
+	public int Deposit(String account, int input) {
+		return dao.Deposit(account, input);
+	}
+	public int Withdraw(String account, int output) {
+		return dao.Withdraw(account, output);
+	}
 }
