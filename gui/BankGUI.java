@@ -151,45 +151,51 @@ public class BankGUI extends JFrame implements ActionListener {
 	
 	public void transferMoney(BankDto sender, String receiverAccount, int sendMoney, String message) {
 		String processRes = "";
-		//(1)계좌 유효성 검사
-		if(biz.accountCheck(receiverAccount)) {
+
+		// (1)계좌 유효성 검사
+		if (biz.accountCheck(receiverAccount)) {
 			System.out.println("++++++ 계좌 유효성 OK! ++++++");
-			//(2)잔액 검사
-			if(my.getT_balance() >= sendMoney) {
+			// (2)잔액 검사
+			if (my.getT_balance() >= sendMoney) {
 				System.out.println("++++++ 거래잔액 OK! ++++++");
-				//(3-0) 본인계좌 여부확인
-				if(!sender.getAccount().equals(receiverAccount)) {
-					//(3)예금주 확인
-					if(JOptionPane.showConfirmDialog(null, "["+biz.selectOne(receiverAccount).getName()+"]님께 보내시는게 맞습니까?") == 0) {
-						//(4) 비밀번호 확인
-						passwordChk = new CheckPW(this,"비밀번호 확인",sender);
+				// (3-0) 본인계좌 여부확인
+				if (!sender.getAccount().equals(receiverAccount)) {
+					// (3)예금주 확인
+					if (JOptionPane.showConfirmDialog(null,"[" + biz.selectOne(receiverAccount).getName() + "]님께 이체하시겠습니까?",
+							"예금주 확인창", JOptionPane.YES_NO_OPTION) == 0) {
+						// (4) 비밀번호 확인
+						passwordChk = new CheckPW(this, "비밀번호 확인", sender);
 						passwordChk.setVisible(true);
-						if(passwordChk.isPwChk()) {
+						if (passwordChk.isPwChk()) {
 							System.out.println("++++++ 비밀번호 확인 OK! ++++++");
-							//(5)내 계좌 출금
-							processRes += biz.updateBalance(sender, sender.getAccount(), -sendMoney,"이체출금");
-							//(6)상대 계좌 입금
+							
+							// (5)내 계좌 출금
+							processRes += biz.updateBalance(sender, sender.getAccount(), -sendMoney, "이체출금");
+							// (6)상대 계좌 입금
 							processRes += biz.updateBalance(sender, receiverAccount, sendMoney, message);
-							if(processRes.equals("22")) {
-								JOptionPane.showMessageDialog(null, "성공적으로 이체되었습니다.", "이체 완료!", JOptionPane.INFORMATION_MESSAGE);
+							if (processRes.equals("22")) {
+								JOptionPane.showMessageDialog(null, "성공적으로 이체되었습니다.", "이체 완료!",
+										JOptionPane.INFORMATION_MESSAGE);
 								System.out.println("++++++ 계좌이체 OK! ++++++");
-							}else {
-								JOptionPane.showMessageDialog(null, "이체가 실패되었습니다.\n다시 시도해주세요.", "이체 실패", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(null, "이체가 실패되었습니다.\n다시 시도해주세요.", "이체 실패",
+										JOptionPane.INFORMATION_MESSAGE);
 								System.err.println("++++++ 계좌이체 실패! ++++++");
 							}
 						}
 					}
-				}else {
+				} else {
 					System.err.println("++++++ 본인계좌 이체 Fail! ++++++");
 					JOptionPane.showMessageDialog(null, "본인 계좌로 이체하실 수 없습니다.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-			}else {
+			} else {
 				System.err.println("++++++ 거래잔액 Fail! ++++++");
 				JOptionPane.showMessageDialog(null, "잔액이 부족합니다.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
-		}else {
+		} else {
 			System.err.println("++++++ 계좌 유효성 Fail! ++++++");
 			JOptionPane.showMessageDialog(null, "존재하지않는 계좌번호입니다.\n다시 확인해주세요", "Error", JOptionPane.ERROR_MESSAGE);
 		}
+		
 	}
 }
