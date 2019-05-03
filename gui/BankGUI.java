@@ -27,7 +27,7 @@ public class BankGUI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JLabel banner_transfer;
-	//1.
+	// 1.
 	private JPanel panel_transfer_top, panel_transfer_mid, panel_transfer_bottom;
 	private JButton btn_transfer, btn_goback;
 	private JTextField txt_account, txt_money, txt_message;
@@ -61,49 +61,48 @@ public class BankGUI extends JFrame implements ActionListener {
 		setBounds(100, 100, 800, 600);
 		Dimension frameSize = this.getSize(); // 프레임 사이즈
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
-		this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); 
+		this.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
-		//2. 
+
+		// 2.
 		panel_transfer_top = new JPanel();
 		panel_transfer_top.setBounds(0, 0, 800, 100);
 		panel_transfer_mid = new JPanel();
-		panel_transfer_mid.setBounds(5, 154, 790, 257);
+		panel_transfer_mid.setBounds(0, 154, 800, 257);
 		panel_transfer_bottom = new JPanel();
 		panel_transfer_bottom.setBounds(0, 430, 800, 122);
-		
-		label_message = new JLabel("받는분 통장메모");
+
+		label_message = new JLabel("받는 분 통장메모");
 		label_message.setBounds(143, 173, 150, 40);
 		label_message.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		label_message.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		
+
 		txt_message = new JTextField(40);
 		txt_message.setBounds(294, 169, 354, 50);
 		btn_transfer = new JButton("이   체");
 		btn_transfer.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		btn_transfer.setBounds(241, 6, 150, 50);
+		btn_transfer.setBounds(243, 6, 150, 50);
 		btn_transfer.setBackground(new Color(32, 178, 170));
 		btn_transfer.setForeground(new Color(0, 0, 0));
 		btn_goback = new JButton("되돌아 가기");
 		btn_goback.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		btn_goback.setBounds(420, 7, 150, 50);
+		btn_goback.setBounds(422, 7, 150, 50);
 		panel_transfer_bottom.add(btn_goback);
 		contentPane.setLayout(null);
-		
+
 		panel_transfer_mid.setLayout(null);
 		label_account = new JLabel("받는 분 계좌번호");
 		label_account.setBounds(143, 47, 150, 40);
 		label_account.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		label_account.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		panel_transfer_mid.add(label_account);
 		txt_account = new JTextField(40);
 		txt_account.setBounds(294, 43, 354, 50);
 		panel_transfer_mid.add(txt_account);
-		label_money = new JLabel("금   액");
+		label_money = new JLabel("보내실 금액");
 		label_money.setBounds(143, 110, 150, 40);
 		label_money.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		label_money.setHorizontalAlignment(SwingConstants.CENTER);
@@ -116,18 +115,18 @@ public class BankGUI extends JFrame implements ActionListener {
 		panel_transfer_mid.add(txt_message);
 		panel_transfer_bottom.setLayout(null);
 		panel_transfer_bottom.add(btn_transfer);
-		
-		//event
+
+		// event
 		btn_transfer.addActionListener(this);
 		btn_goback.addActionListener(this);
 		contentPane.setLayout(null);
 
-		//4. 
+		// 4.
 		getContentPane().add(panel_transfer_top);
 		ImageIcon img = new ImageIcon("images/banner_transfer.png");
-		Image preImg = img.getImage();  //ImageIcon을 Image로 변환.
+		Image preImg = img.getImage(); // ImageIcon을 Image로 변환.
 		Image afterImg = preImg.getScaledInstance(800, 100, java.awt.Image.SCALE_SMOOTH);
-		ImageIcon afterIcon = new ImageIcon(afterImg); //Image로 ImageIcon 생성
+		ImageIcon afterIcon = new ImageIcon(afterImg); // Image로 ImageIcon 생성
 		panel_transfer_top.setLayout(new GridLayout(0, 1, 0, 0));
 		banner_transfer = new JLabel("");
 		panel_transfer_top.add(banner_transfer);
@@ -136,19 +135,19 @@ public class BankGUI extends JFrame implements ActionListener {
 		getContentPane().add(panel_transfer_mid);
 		getContentPane().add(panel_transfer_bottom);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btn_transfer) {
+		if (e.getSource() == btn_transfer) {
 			String trans_account = txt_account.getText();
 			String trans_message = txt_message.getText();
 			int trans_money = Integer.parseInt(txt_money.getText());
 			transferMoney(my, trans_account, trans_money, trans_message);
-		}else if(e.getSource() == btn_goback) {
-			JOptionPane.showConfirmDialog(null, "이 페이지를 나가시겠습니까?","되돌아 가기",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+		} else if (e.getSource() == btn_goback) {
+			JOptionPane.showConfirmDialog(null, "이 페이지를 나가시겠습니까?", "되돌아 가기", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		}
 	}
-	
+
 	public void transferMoney(BankDto sender, String receiverAccount, int sendMoney, String message) {
 		String processRes = "";
 
@@ -168,18 +167,16 @@ public class BankGUI extends JFrame implements ActionListener {
 						passwordChk.setVisible(true);
 						if (passwordChk.isPwChk()) {
 							System.out.println("++++++ 비밀번호 확인 OK! ++++++");
-							
 							// (5)내 계좌 출금
 							processRes += biz.updateBalance(sender, sender.getAccount(), -sendMoney, "이체출금");
 							// (6)상대 계좌 입금
 							processRes += biz.updateBalance(sender, receiverAccount, sendMoney, message);
 							if (processRes.equals("22")) {
-								JOptionPane.showMessageDialog(null, "성공적으로 이체되었습니다.", "이체 완료!",
-										JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "성공적으로 이체되었습니다.", "이체 완료!", JOptionPane.INFORMATION_MESSAGE);
 								System.out.println("++++++ 계좌이체 OK! ++++++");
+								setVisible(false);
 							} else {
-								JOptionPane.showMessageDialog(null, "이체가 실패되었습니다.\n다시 시도해주세요.", "이체 실패",
-										JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "이체가 실패되었습니다.\n다시 시도해주세요.", "이체 실패", JOptionPane.INFORMATION_MESSAGE);
 								System.err.println("++++++ 계좌이체 실패! ++++++");
 							}
 						}
