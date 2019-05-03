@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import com.Biz.BankBiz;
 import com.dao.LookupDao;
 import com.dto.BankDto;
+import javax.swing.UIManager;
 
 public class LookupGui implements ActionListener,ItemListener {
 	List<BankDto> tradeList;
@@ -46,6 +47,7 @@ public class LookupGui implements ActionListener,ItemListener {
 	int balance;
 	private final JPanel pan00 = new JPanel();
 	private JLabel imageLabel;
+	private JButton bBack;
 
 
 	public static void main(String[] args) {
@@ -70,10 +72,10 @@ public class LookupGui implements ActionListener,ItemListener {
 	 */
 	private void initialize() {
 		frame = new JFrame("::계좌조회::");
+		frame.setResizable(false);
 		frame.setForeground(Color.GRAY);
-		frame.setType(Type.UTILITY);
 		frame.setBackground(Color.WHITE);
-		frame.setBounds(100, 100, 818, 600);
+		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -118,9 +120,9 @@ public class LookupGui implements ActionListener,ItemListener {
 		pan01.add(fbalance);
 		fbalance.setColumns(10);
 		
-		bLookup = new JButton("거래내역조회");
-		bLookup.setBackground(SystemColor.menu);
-		bLookup .setBounds(587, 46, 142, 103);
+		bLookup = new JButton("거래조회하기");
+		bLookup.setBackground(new Color(32, 178, 170));
+		bLookup .setBounds(587, 88, 142, 61);
 		bLookup.addActionListener(this);
 		pan01.add(bLookup);
 		
@@ -128,12 +130,17 @@ public class LookupGui implements ActionListener,ItemListener {
 		label_1.setBounds(449, 115, 58, 30);
 		pan01.add(label_1);
 		
+		bBack = new JButton("메인으로가기");
+		bBack.setBackground(new Color(255, 255, 255));
+		bBack.setBounds(587, 27, 142, 46);
+		bBack.addActionListener(this);
+		pan01.add(bBack);
+		
 		pan02 = new JPanel();
 		pan02.setBounds(0, 270, 800, 280);
 		pan02.setLayout(null);
 		frame.getContentPane().add(pan02);
 		model = new DefaultTableModel();
-		model.addColumn("계좌번호");
 		model.addColumn("거래날짜");
 		model.addColumn("보낸분/받는분");
 		model.addColumn("송금메모");
@@ -154,10 +161,10 @@ public class LookupGui implements ActionListener,ItemListener {
 		JScrollPane scrollPane01 = new JScrollPane(Looktable);
 		scrollPane01.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane01.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane01.setBounds(122, 25, 630, 199);
+		scrollPane01.setBounds(121, 25, 630, 199);
 		pan02.add(scrollPane01);
 		
-		JComboBox combo = new JComboBox();
+		JComboBox<String> combo = new JComboBox<String>();
 		combo.setBounds(14, 25, 99, 34);
 		pan02.add(combo);
 		combo.addItem("입금+출금");
@@ -183,6 +190,8 @@ public class LookupGui implements ActionListener,ItemListener {
 			pan02.setVisible(true);
 			LookupList();
 			bLookup.setVisible(true);
+		}else if(e.getSource()==bBack) {
+			JOptionPane.showConfirmDialog(null, "메인으로돌아가시겠습니까?");
 		}
 	}
 	public void LookupList() {
@@ -219,7 +228,7 @@ public class LookupGui implements ActionListener,ItemListener {
 				int output = dto.getOutput();
 				int balance = dto.getBalance();
 				
-				model.addRow(new Object[] {account,trade_date,sender,message,input,output,balance});	
+				model.addRow(new Object[] {trade_date,sender,message,input,output,balance});	
 				}
 
 				Looktable.setModel(model);
@@ -254,7 +263,7 @@ public class LookupGui implements ActionListener,ItemListener {
 				int output = dto.getOutput();
 				int balance = dto.getBalance();
 				
-				model.addRow(new Object[] {account,trade_date,sender,message,input,output,balance});	
+				model.addRow(new Object[] {trade_date,sender,message,input,output,balance});	
 				}
 
 				Looktable.setModel(model);
@@ -277,7 +286,7 @@ public class LookupGui implements ActionListener,ItemListener {
 				int output = dto.getOutput();
 				int balance = dto.getBalance();
 				
-				model.addRow(new Object[] {account,trade_date,sender,message,input,output,balance});	
+				model.addRow(new Object[] {trade_date,sender,message,input,output,balance});	
 				}
 
 				Looktable.setModel(model);
@@ -300,7 +309,7 @@ public class LookupGui implements ActionListener,ItemListener {
 				int output = dto.getOutput();
 				int balance = dto.getBalance();
 				
-				model.addRow(new Object[] {account,trade_date,sender,message,input,output,balance});	
+				model.addRow(new Object[] {trade_date,sender,message,input,output,balance});	
 				}
 
 				Looktable.setModel(model);
