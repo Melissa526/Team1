@@ -342,7 +342,7 @@ public class BankDao {
 		return accountChk;
 	}
 	
-	public int Deposit(String account, String message, int in_money) {
+	public int Deposit(String account, int in_money) {
 		Connection con = getConnection();
 		PreparedStatement pstm01 = null;
 		PreparedStatement pstm02 = null;
@@ -369,8 +369,8 @@ public class BankDao {
 		try {
 			pstm02 = con.prepareStatement(sql02);
 			pstm02.setString(1,account);
-			pstm02.setString(2,"ATM입금");
-			pstm02.setString(3,message);
+			pstm02.setString(2,"ATM");
+			pstm02.setString(3,"입금");
 			pstm02.setInt(4,in_money);
 			pstm02.setInt(5,0);
 			pstm02.setInt(6,getBalance(account));
@@ -395,7 +395,7 @@ public class BankDao {
 		return res01+res02;
 	}
 	
-	public int Withdraw(String account, String message, int out_money) {
+	public int Withdraw(String account, int out_money) {
 		Connection con = getConnection();
 		PreparedStatement pstm01 = null;
 		PreparedStatement pstm02 = null;
@@ -422,8 +422,8 @@ public class BankDao {
 		try {
 			pstm02 = con.prepareStatement(sql02);
 			pstm02.setString(1,account);
-			pstm02.setString(2,"ATM출금");
-			pstm02.setString(3,message);
+			pstm02.setString(2,"ATM");
+			pstm02.setString(3,"출금");
 			pstm02.setInt(4,0);
 			pstm02.setInt(5,out_money);
 			pstm02.setInt(6,getBalance(account));
